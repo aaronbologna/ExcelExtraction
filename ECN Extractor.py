@@ -22,7 +22,6 @@ cur = conn.cursor()
 # Make some fresh tables using executescript()
 cur.executescript('''
 DROP TABLE IF EXISTS ECN;
-DROP TABLE IF EXISTS AFFECTED_PARTS;
 DROP TABLE IF EXISTS AFFECTED_DOCUMENTS;
 DROP TABLE IF EXISTS AFFECTED_FGS;
 
@@ -171,7 +170,7 @@ for f in files:
            df3 = pd.read_excel (f, sheet_name='FG List') 
            while True:
                if len(str(int(df3['SAP #'][fgrow]))) == 7:
-                   pn = df3['SAP #'][fgrow]
+                   pn = int(df3['SAP #'][fgrow])
                    model_name = df3['Model Name'][fgrow]
                    cur.execute('''INSERT OR IGNORE INTO AFFECTED_FGS (ecn, pn, model_name) VALUES ( ?,?,?)''', (ecn, pn, model_name))
                    conn.commit()
